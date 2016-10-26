@@ -130,7 +130,7 @@ func (e *Endorser) callChaincode(ctxt context.Context, cis *pb.ChaincodeInvocati
 	defer txsim.Done()
 
 	ctxt = context.WithValue(ctxt, chaincode.TXSimulatorKey, txsim)
-	b, err = chaincode.ExecuteChaincode(ctxt, pb.Transaction_CHAINCODE_INVOKE, chainName, cis.ChaincodeSpec.ChaincodeID.Name, cis.ChaincodeSpec.CtorMsg.Args)
+	b, err = chaincode.ExecuteChaincode(ctxt, pb.Transaction_CHAINCODE_QUERY, chainName, cis.ChaincodeSpec.ChaincodeID.Name, cis.ChaincodeSpec.CtorMsg.Args)
 
 	if err != nil {
 		return nil, nil, err

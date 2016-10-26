@@ -394,7 +394,8 @@ func (handler *Handler) beforeQuery(e *fsm.Event) {
 			e.Cancel(fmt.Errorf("Received unexpected message type"))
 			return
 		}
-		handler.handleQuery(msg)
+		//handler.handleQuery(msg)
+		handler.handleTransaction(msg)
 	}
 }
 
