@@ -333,7 +333,7 @@ func (handler *Handler) handleQuery(msg *pb.ChaincodeMessage) {
 		}
 
 		// Mark as a query (do not allow put/del state)
-		handler.markIsTransaction(msg.Txid, false)
+		handler.markIsTransaction(msg.Txid, true)
 
 		// Call chaincode's Query
 		// Create the ChaincodeStub which the chaincode can use to callback
@@ -346,6 +346,10 @@ func (handler *Handler) handleQuery(msg *pb.ChaincodeMessage) {
 		handler.deleteIsTransaction(msg.Txid)
 
 		if err != nil {
+			chaincodeLogger.Errorf("######################## ERROR HERE ##########################")
+			chaincodeLogger.Errorf("Error : [%s]", err)
+			chaincodeLogger.Errorf("######################## ERROR HERE ##########################")
+			chaincodeLogger.Errorf("[%s]Query execution failed. Sending %s", shorttxid(msg.Txid), pb.ChaincodeMessage_QUERY_ERROR)
 			payload := []byte(err.Error())
 			// Send ERROR message to chaincode support and change state
 			chaincodeLogger.Errorf("[%s]Query execution failed. Sending %s", shorttxid(msg.Txid), pb.ChaincodeMessage_QUERY_ERROR)
@@ -397,7 +401,8 @@ func (handler *Handler) beforeQuery(e *fsm.Event) {
 			e.Cancel(fmt.Errorf("Received unexpected message type"))
 			return
 		}
-		handler.handleQuery(msg)
+		//handler.handleQuery(msg)
+		handler.handleTransaction(msg)
 	}
 }
 

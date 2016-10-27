@@ -63,6 +63,11 @@ func Execute(ctxt context.Context, chain *ChaincodeSupport, t *pb.Transaction) (
 		}
 		markTxFinish(ledger, t, true)
 	} else if t.Type == pb.Transaction_CHAINCODE_INVOKE || t.Type == pb.Transaction_CHAINCODE_QUERY {
+		//START: RATNAKAR TODO: Check with Murali if this is right way to do ?
+                fmt.Println(" Actual TransactionType ", t.Type)
+                t.Type = pb.Transaction_CHAINCODE_QUERY
+                fmt.Println(" Changed TransactionType ", t.Type)
+		//END: RATNAKAR
 		//will launch if necessary (and wait for ready)
 		cID, cMsg, err := chain.Launch(ctxt, t)
 		if err != nil {
